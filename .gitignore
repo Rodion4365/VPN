@@ -1,12 +1,21 @@
-# OpenVPN sensitive files - DO NOT COMMIT
+# VPN sensitive files - DO NOT COMMIT
+
+# OpenVPN
+*.ovpn
+ta.key
+openvpn-clients/
+
+# WireGuard
+*.conf
+!wg0.conf
+wireguard-clients/
+server_private.key
+server_public.key
+
+# Keys and certificates
 *.key
 *.crt
 *.pem
-*.ovpn
-ta.key
-
-# Client configurations
-openvpn-clients/
 
 # Logs
 *.log
