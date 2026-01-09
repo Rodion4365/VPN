@@ -1,0 +1,30 @@
+# OpenVPN sensitive files - DO NOT COMMIT
+*.key
+*.crt
+*.pem
+*.ovpn
+ta.key
+
+# Client configurations
+openvpn-clients/
+
+# Logs
+*.log
+
+# Backup files
+*-backup-*.tar.gz
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+.vscode/
+.idea/
