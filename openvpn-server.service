@@ -1,0 +1,49 @@
+# OpenVPN systemd service file with resource limits
+# Copy this file to /etc/systemd/system/openvpn-server@.service
+# to override default OpenVPN service with resource-optimized version
+
+[Unit]
+Description=OpenVPN connection to %i (Resource Optimized)
+After=network.target
+Documentation=man:openvpn(8)
+Documentation=https://community.openvpn.net/
+
+[Service]
+Type=notify
+PrivateTmp=true
+WorkingDirectory=/etc/openvpn
+ExecStart=/usr/sbin/openvpn --status /var/log/openvpn/%i-status.log --cd /etc/openvpn --config /etc/openvpn/%i.conf
+CapabilityBoundingSet=CAP_IPC_LOCK CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW CAP_SETGID CAP_SETUID CAP_SYS_CHROOT CAP_DAC_OVERRIDE
+LimitNPROC=10
+DeviceAllow=/dev/null rw
+DeviceAllow=/dev/net/tun rw
+ProtectSystem=true
+ProtectHome=true
+KillMode=process
+RestartSec=5s
+Restart=on-failure
+
+# Resource Limits
+# These settings ensure OpenVPN doesn't overload the server
+# Adjust based on your needs
+
+# CPU Limits
+CPUQuota=25%                    # Limit to 25% of one CPU core
+CPUWeight=50                    # Lower priority (default is 100)
+
+# Memory Limits
+MemoryMax=256M                  # Maximum memory usage
+MemoryHigh=192M                 # Soft limit, triggers throttling
+MemorySwapMax=128M              # Maximum swap usage
+
+# IO Limits (if you want to limit disk I/O)
+IOWeight=50                     # Lower I/O priority (default is 100)
+
+# Process Limits
+TasksMax=50                     # Maximum number of tasks (processes/threads)
+
+# Nice value (already set in config, but can be enforced here)
+Nice=10
+
+[Install]
+WantedBy=multi-user.target
